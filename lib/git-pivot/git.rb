@@ -8,11 +8,18 @@ module GitPivot
       end
 
       def repo
-        Grit::Repo.new(`pwd`.strip)
+        @repo ||= Grit::Repo.new(`pwd`.strip)
       end
 
       def branch
-        Grit::Branch 
+        @branch = repo.head.name
+      end
+
+      def info
+        """
+        -- Git Info --
+        Branch name: #{branch}
+        """
       end
     end
   end

@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Luke van der Hoeven"]
   s.email       = ["hungerandthirst@gmail.com"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/plukevdh/git-pivot"
   s.summary     = %q{GitPivot: Integrate your git and pivotal workflow.}
   s.description = %q{GitPivot is a Git/Github/PivotalTracker integration toolset. It tries to lighten you workflow to a smaller set of commands.}
 
@@ -18,4 +18,6 @@ Gem::Specification.new do |s|
   s.add_dependency "grit"
   s.add_dependency "pivotal-tracker"
   s.add_dependency "thor"
+
+  s.add_development_dependency "rspec"
 end

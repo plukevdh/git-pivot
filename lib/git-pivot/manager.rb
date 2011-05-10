@@ -8,7 +8,9 @@ module GitPivot
 
     desc "info", "Gives you current PivotalTracker/Github information about the current ticket."
     def info
-
+      $stdout.write GitPivot::Git.info
+      $stdout.write "\n"
+      $stdout.write GitPivot::Pivotal.info
     end
   end
 end
