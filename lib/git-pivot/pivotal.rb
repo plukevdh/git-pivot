@@ -10,7 +10,8 @@ require 'pivotal-tracker'
 #   `git config --local pivotal.project-id'
 
 module GitPivot
-  class Pivotal
+  module Pivotal
+    extend GitPivot::Shared
 
     class << self
       def story_id
@@ -18,27 +19,27 @@ module GitPivot
       end
 
       def project
-        @project ||= tracker.project.find GitPivot::Git.repo.config['pivotal.project-id']
+        @project ||= tracker.project.find GitPivot::Git.config 'pivotal.project-id'
       end
 
       def story
-        return $stdout.write "You are not currently working on a story branch. Please checkout or start a story branch." if current_story == 0
+        exit out "You are not currently working on a story branch. Please checkout or start a story branch.\n" if story_id == 0
         project.stories.find(current_story)
       end
       
       def info
-        return "No info found for Pivotal Tracker." unless story
-        """
-        -- Pivotal Info --
-        Name: #{story.name}
-        URL: #{story.url}
-        Desc: #{story.description}
-        """
+        return out "No info found for Pivotal Tracker." unless story
+"""
+-- Pivotal Info --
+Name: #{story.name}
+URL: #{story.url}
+Desc: #{story.description}
+"""
       end
 
       private
       def tracker
-        PivotalTracker::Client.token = GitPivot::Git.repo.config['pivotal.api-token']
+        PivotalTracker::Client.token = GitPivot::Git.config 'pivotal.api-token'
       end
 
     end
