@@ -10,7 +10,6 @@ module GitPivot
     desc "info", "Gives you current PivotalTracker/Github information about the current ticket."
     def info
       out GitPivot::Git.info
-      out "\n"
       out GitPivot::Pivotal.info
     end
 

@@ -29,16 +29,17 @@ module GitPivot
         story = (mine || id.nil?) ? project.stories.all(owned_by: user).first : project.stories.find(id)
 
         story.update(owned_by: user, current_state: :started)
-        return ["pt-#{story.type}-#{story.id}", "Story #{id} started..."]
+        return ["pt-#{story.story_type}-#{story.id}", "Story #{id} started..."]
       end
       
       def info
-        return out "No info found for Pivotal Tracker." unless story
+        current_story
+        return "No info found for Pivotal Tracker.\n" if @story.nil?
 """
 -- Pivotal Info --
-Name: #{story.name}
-URL: #{story.url}
-Desc: #{story.description}
+Name: #{@story.name}
+URL: #{@story.url}
+Desc: #{@story.description}
 """
       end
 
@@ -53,8 +54,8 @@ Desc: #{story.description}
       end
 
       def current_story
-        exit out "You are not currently working on a story branch. Please checkout or start a story branch.\n" if story_id == 0
-        project.stories.find(story_id)
+        return out "You are not currently working on a story branch.\n" if current_story_id == 0
+        @story = project.stories.find(current_story_id)
       end
     end
   end
