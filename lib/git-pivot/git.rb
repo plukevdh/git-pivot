@@ -10,18 +10,13 @@ module GitPivot
         "Switched to branch #{branch_name}..."
       end
 
-      def finish
-        if has_changes?
-          out "Do you want to commit all changes automatically (y/n)? "
-          if input.downcase == "y"
-            out "Please enter your commit message: "
-            close_commit input
-          else
-            out "You can add this to your commit later if you like: [Delivers: #{GitPivot::Pivotal.story_id}]"
-          end
-          return out "Please commit all changes before finishing."
+      def finish(commit)
+        if has_changes? && commit
+          out "Please enter your commit message: "
+          close_commit input
+        else has_changes?
+          return out "Please commit changes before closing ticket."
         end
-
 
         merge_branch
         out "Merged changes back to master."

@@ -15,7 +15,6 @@ module GitPivot
 
     desc "start TICKET_ID", "Start a story."
     method_option :mine, type: :boolean, aliases: "-m", desc: "Will ignore ticket id and and simply grab the first in your queue"
-
     def start(ticket=nil)
       id, text = GitPivot::Pivotal.start(ticket, options[:mine])
       
@@ -25,8 +24,12 @@ module GitPivot
       out "\nYou are now licensed to develop. Godspeed.\n"
     end
 
+
+    desc "finish", "Finish a story"
+    method_option :commit, type: :boolean, aliases: "-c", 
+      desc: "Commit all existing changes with a message (and additional [Delivers: XXX] tag)."
     def finish
-      GitPivot::Git.finish
+      GitPivot::Git.finish(options[:commit])
       GitPivot::Pivotal.finish
       out "Story complete."
     end
