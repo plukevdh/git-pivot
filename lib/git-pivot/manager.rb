@@ -23,7 +23,7 @@ module GitPivot
       out text
       out "\n"
       out GitPivot::Git.start(id)
-      out "You are now licensed to develop. Godspeed."
+      out "\nYou are now licensed to develop. Godspeed.\n"
     end
   end
 end
