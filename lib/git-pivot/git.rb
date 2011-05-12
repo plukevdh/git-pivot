@@ -31,7 +31,7 @@ module GitPivot
       end
 
       def branch
-        @branch = repo.head.name
+        @branch ||= repo.head.name
       end
       
 
@@ -57,7 +57,7 @@ Branch name: #{branch}
       def merge_branch
         from = branch
         `git checkout #{integration_branch}`
-        `git merge --no-ff #{from}`
+        `git merge #{from}`
         `git branch -d #{from}`
       end
 
