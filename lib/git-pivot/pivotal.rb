@@ -33,13 +33,16 @@ module GitPivot
       end
 
       def finish
-        current_story.update(current_state: :finished)
-        out "Marked story as finished.\n"
+        current_story
+        exit out "You are not currently working on a story."
+
+        @story.update(current_state: :finished)
+        out "Marked story as finished."
       end
       
       def info
         current_story
-        return "No info found for Pivotal Tracker.\n" if @story.nil?
+        return "No info found for Pivotal Tracker." if @story.nil?
 """
 -- Pivotal Info --
 Name: #{@story.name}

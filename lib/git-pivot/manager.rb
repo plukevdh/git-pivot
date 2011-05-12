@@ -19,9 +19,8 @@ module GitPivot
       id, text = GitPivot::Pivotal.start(ticket, options[:mine])
       
       out text
-      out "\n"
       out GitPivot::Git.start(id)
-      out "\nYou are now licensed to develop. Godspeed.\n"
+      out "You are now licensed to develop. Godspeed."
     end
 
 
@@ -31,7 +30,7 @@ module GitPivot
     def finish
       GitPivot::Pivotal.finish
       GitPivot::Git.finish(options[:commit])
-      out "Story complete.\n"
+      out "Story complete."
     end
   end
 end

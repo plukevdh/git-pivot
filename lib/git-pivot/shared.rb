@@ -1,7 +1,8 @@
 module GitPivot
   module Shared
-    def out(text)
+    def out(text, newline=true)
       $stdout.write text
+      $stdout.write "\n" if newline
     end
 
     def input

@@ -12,14 +12,14 @@ module GitPivot
 
       def finish(commit)
         if has_changes? && commit
-          out "Please enter your commit message: "
+          out "Please enter your commit message: ", false
           close_commit input
         elsif has_changes?
-          exit out "Please commit changes before closing ticket.\n"
+          exit out "Please commit changes before closing ticket."
         end
 
         merge_branch
-        out "Merged changes back to master.\n"
+        out "Merged changes back to master."
       end
 
       def config(param)
