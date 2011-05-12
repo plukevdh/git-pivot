@@ -5,6 +5,7 @@ require 'pivotal-tracker'
 #
 # For your generic PT info, set the following option as part of your global opts:
 #   `git config --global pivotal.api-token XXX`
+#   `git config --global pivotal.full-nam FULL NAME`
 #
 # For your project, set your PT project id:
 #   `git config --local pivotal.project-id'
@@ -14,17 +15,20 @@ module GitPivot
     extend GitPivot::Shared
 
     class << self
-      def story_id
-        @story_id ||= GitPivot::Git.branch.split('-').last.to_i
-      end
-
       def project
         @project ||= tracker.project.find GitPivot::Git.config 'pivotal.project-id'
       end
 
-      def story
-        exit out "You are not currently working on a story branch. Please checkout or start a story branch.\n" if story_id == 0
-        project.stories.find(current_story)
+      def user
+        @user ||= GitPivot::Git.config 'pivotal.full-name'
+      end
+
+      # will ignore id if mine is true
+      def start(id=nil, mine=false)
+        story = (mine || id.nil?) ? tracker.stories.all(owned_by: user).first : tracker.stories.find(id)
+
+        story.update(owned_by: user, current_state: :started)
+        return ["pt-#{story.type}-#{story.id}", "Story #{id} started..."]
       end
       
       def info
@@ -42,6 +46,14 @@ Desc: #{story.description}
         PivotalTracker::Client.token = GitPivot::Git.config 'pivotal.api-token'
       end
 
+      def current_story_id
+        @story_id ||= GitPivot::Git.branch.split('-').last.to_i
+      end
+
+      def current_story
+        exit out "You are not currently working on a story branch. Please checkout or start a story branch.\n" if story_id == 0
+        project.stories.find(story_id)
+      end
     end
   end
 end

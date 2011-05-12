@@ -7,7 +7,7 @@ module GitPivot
     class << self
       def start(branch_name)
         create_branch(branch_name)
-        out "Switched to branch #{name}"
+        out "Switched to branch #{branch_name}..."
       end
 
       def finish

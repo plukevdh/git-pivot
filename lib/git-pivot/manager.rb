@@ -13,6 +13,18 @@ module GitPivot
       out "\n"
       out GitPivot::Pivotal.info
     end
+
+    desc "start TICKET_ID", "Start a story."
+    method_option :mine, type: :boolean, aliases: "-m", desc: "Will ignore ticket id and and simply grab the first in your queue"
+
+    def start(ticket=nil)
+      id, text = GitPivot::Pivotal.start(ticket, options[:mine])
+      
+      out text
+      out "\n"
+      out GitPivot::Git.start(id)
+      out "You are now licensed to develop. Godspeed."
+    end
   end
 end
 
