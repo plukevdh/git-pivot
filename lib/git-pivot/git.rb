@@ -11,16 +11,20 @@ module GitPivot
       end
 
       def finish
-        out "Do you want to commit all changes with a PT tag (y/n)? "
-        if input.downcase == "y"
-          out "Please enter your commit message: "
-          close_commit input
-        else
-          out "You can add this to your commit later if you like: [Delivers: #{GitPivot::Pivotal.story_id}]"
+        if has_changes?
+          out "Do you want to commit all changes automatically (y/n)? "
+          if input.downcase == "y"
+            out "Please enter your commit message: "
+            close_commit input
+          else
+            out "You can add this to your commit later if you like: [Delivers: #{GitPivot::Pivotal.story_id}]"
+          end
+          return out "Please commit all changes before finishing."
         end
 
+
         merge_branch
-        out "Merged changes back to master"
+        out "Merged changes back to master."
       end
 
       def config(param)
@@ -60,6 +64,10 @@ Branch name: #{branch}
 
       def close_commit(input)
         repo.commit_all(input)
+      end
+
+      def has_changes?
+        !repo.status.changed.empty?
       end
     end
   end

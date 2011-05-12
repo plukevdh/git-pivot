@@ -24,6 +24,12 @@ module GitPivot
       out GitPivot::Git.start(id)
       out "\nYou are now licensed to develop. Godspeed.\n"
     end
+
+    def finish
+      GitPivot::Git.finish
+      GitPivot::Pivotal.finish
+      out "Story complete."
+    end
   end
 end
 

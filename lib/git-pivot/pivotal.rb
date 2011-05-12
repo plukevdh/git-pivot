@@ -31,6 +31,11 @@ module GitPivot
         story.update(owned_by: user, current_state: :started)
         return ["pt-#{story.story_type}-#{story.id}", "Story #{id} started..."]
       end
+
+      def finish
+        current_story.update(current_state: :finished)
+        out "Marked story as finished..."
+      end
       
       def info
         current_story
@@ -55,7 +60,7 @@ Desc: #{@story.description}
 
       def current_story
         return out "You are not currently working on a story branch.\n" if current_story_id == 0
-        @story = project.stories.find(current_story_id)
+        @story ||= project.stories.find(current_story_id)
       end
     end
   end
