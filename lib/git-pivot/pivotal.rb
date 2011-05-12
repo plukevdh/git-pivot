@@ -16,7 +16,8 @@ module GitPivot
 
     class << self
       def project
-        @project ||= tracker.project.find GitPivot::Git.config 'pivotal.project-id'
+        tracker
+        @project ||= PivotalTracker::Project.find GitPivot::Git.config 'pivotal.project-id'
       end
 
       def user
@@ -25,7 +26,7 @@ module GitPivot
 
       # will ignore id if mine is true
       def start(id=nil, mine=false)
-        story = (mine || id.nil?) ? tracker.stories.all(owned_by: user).first : tracker.stories.find(id)
+        story = (mine || id.nil?) ? project.stories.all(owned_by: user).first : project.stories.find(id)
 
         story.update(owned_by: user, current_state: :started)
         return ["pt-#{story.type}-#{story.id}", "Story #{id} started..."]
@@ -44,6 +45,7 @@ Desc: #{story.description}
       private
       def tracker
         PivotalTracker::Client.token = GitPivot::Git.config 'pivotal.api-token'
+        PivotalTracker::Client.use_ssl = true if GitPivot::Git.config 'pivotal.use-ssl'
       end
 
       def current_story_id
