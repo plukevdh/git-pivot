@@ -13,6 +13,15 @@ Install
 
 `gem install git-pivot`
 
+TODO
+----
+
+Make. Moar. Awesome.
+
+Also, it'd be cool to make tracker engines configurable. For example, maybe I 
+want to use GH Issues over PT, or maybe Lighthouse. Should be easy to make extendable
+since the Tracker/Repo drivers are separated out.
+
 Development
 -----------
 
