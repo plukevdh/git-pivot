@@ -14,12 +14,12 @@ module GitPivot
         if has_changes? && commit
           out "Please enter your commit message: "
           close_commit input
-        else has_changes?
-          return out "Please commit changes before closing ticket."
+        elsif has_changes?
+          exit out "Please commit changes before closing ticket.\n"
         end
 
         merge_branch
-        out "Merged changes back to master."
+        out "Merged changes back to master.\n"
       end
 
       def config(param)
@@ -34,9 +34,6 @@ module GitPivot
         @branch = repo.head.name
       end
       
-      def integration_branch
-        config "pivotal.integration-branch"
-      end
 
       def info
 """
@@ -51,10 +48,17 @@ Branch name: #{branch}
         `git checkout #{name}`
       end
 
+      def integration_branch
+        branch = config "pivotal.integration-branch"
+        branch = 'master' unless branch
+      end
+
+      # TODO: error detect
       def merge_branch
         from = branch
-        `git checkout -b #{integration_branch}`
+        `git checkout #{integration_branch}`
         `git merge --no-ff #{from}`
+        `git branch -d #{from}`
       end
 
       def close_commit(input)

@@ -29,9 +29,9 @@ module GitPivot
     method_option :commit, type: :boolean, aliases: "-c", 
       desc: "Commit all existing changes with a message (and additional [Delivers: XXX] tag)."
     def finish
-      GitPivot::Git.finish(options[:commit])
       GitPivot::Pivotal.finish
-      out "Story complete."
+      GitPivot::Git.finish(options[:commit])
+      out "Story complete.\n"
     end
   end
 end

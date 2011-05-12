@@ -34,7 +34,7 @@ module GitPivot
 
       def finish
         current_story.update(current_state: :finished)
-        out "Marked story as finished..."
+        out "Marked story as finished.\n"
       end
       
       def info
