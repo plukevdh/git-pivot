@@ -29,7 +29,7 @@ module GitPivot
         story = (mine || id.nil?) ? project.stories.all(owned_by: user).first : project.stories.find(id)
 
         story.update(owned_by: user, current_state: :started)
-        return [story.id, story.story_type "Story #{id} started..."]
+        return [story.id, story.story_type, "Story #{id} started..."]
       end
 
       def finish
