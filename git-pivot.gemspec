@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name        = "git-pivot"
-  s.version     = "0.0.2"
+  s.version     = "0.0.3"
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Luke van der Hoeven"]
   s.email       = ["hungerandthirst@gmail.com"]
