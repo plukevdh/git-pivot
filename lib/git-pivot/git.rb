@@ -5,8 +5,9 @@ module GitPivot
     extend GitPivot::Shared
 
     class << self
-      def start(branch_name)
-        create_branch(branch_name)
+      def start(id, type)
+        create_branch(id, type)
+        last_story(id)
         "Switched to branch #{branch_name}..."
       end
 
@@ -22,10 +23,15 @@ module GitPivot
         out "Merged changes back to master."
       end
 
-      def config(param)
-        repo.config[param]
+      def deliver
+        `git push`
       end
 
+      def config(param=nil)
+        return repo.config unless param
+        repo.config[param]
+      end
+      
       def repo
         @repo ||= Grit::Repo.new(`pwd`.strip)
       end
@@ -33,7 +39,11 @@ module GitPivot
       def branch
         @branch ||= repo.head.name
       end
-      
+
+      def last_story(id=nil)
+        return config['pivotal.last-story'] unless id
+        config['pivotal.last-story'] = id
+      end
 
       def info
 """
@@ -43,7 +53,9 @@ Branch name: #{branch}
       end
       
       private
-      def create_branch(name)
+      def create_branch(id, type)
+        name = "pt-#{type}-#{id}"       
+
         `git branch #{name}`
         `git checkout #{name}`
       end
