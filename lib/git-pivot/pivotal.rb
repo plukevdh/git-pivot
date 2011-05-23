@@ -36,7 +36,7 @@ module GitPivot
         current_story
         exit out "You are not currently working on a story."
 
-        @story.update(current_state: :finished)
+        @story.update(completed: :true)
         out "Marked story as finished."
       end
       
