@@ -6,7 +6,7 @@ module GitPivot
 
     class << self
       def start(id, type)
-        create_branch(id, type)
+        branch_name = create_branch(id, type)
         last_story(id)
         "Switched to branch #{branch_name}..."
       end
@@ -58,6 +58,8 @@ Branch name: #{branch}
 
         `git branch #{name}`
         `git checkout #{name}`
+        
+        name
       end
 
       def integration_branch

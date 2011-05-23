@@ -35,7 +35,7 @@ module GitPivot
       def finish
         current_story
 
-        @story.update(current_state: :finished)
+        @story.update(completed: true)
         out "Marked story as finished."
       end
 
@@ -67,7 +67,7 @@ Desc: #{@story.description}
       end
 
       def current_story
-        return out "You are not currently working on a story" if current_story_id == 0
+        exit out "You are not currently working on a story" if current_story_id == 0
         @story ||= project.stories.find(current_story_id)
       end
     end
