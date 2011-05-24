@@ -26,10 +26,10 @@ module GitPivot
 
       # will ignore id if mine is true
       def start(id=nil, mine=false)
-        conditions = { current_state: "unstarted", limit: 1, offset: 0 }
+        conditions = { current_state: :unstarted, limit: 1, offset: 0 }
         conditions[:owned_by] = user if mine
 
-        story = (mine || id.nil?) ? project.stories.all(conditions).first
+        story = project.stories.all(conditions).first
 
         story.update(owned_by: user, current_state: :started)
         return [story.id, story.story_type, "Story #{id} started..."]
